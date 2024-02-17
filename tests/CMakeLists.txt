@@ -5,11 +5,11 @@ add_executable(wheel_ut wheelTimer_ut.cpp)
 
 
 target_link_libraries(tree_ut
-        PUBLIC timer
+        PUBLIC timer threads
 )
 
 target_link_libraries(wheel_ut
-        PUBLIC timer
+        PUBLIC timer threads
 )
 
 
