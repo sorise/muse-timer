@@ -84,3 +84,37 @@ auto token = timer.setInterval(1000ms, [](int value){
 
 TimerWheel::clearInterval(token); //取消任务
 ```
+
+#### 2.5 将定时器任务交给线程池执行  
+默认情况下定时器任务会直接在定时器线程中执行，如果需要将任务交给线程池执行，可以使用 inject_thread_pool 方法注入一个线程池。
+```cpp
+#include <iostream>
+#include <memory>
+#include "timer/timer_wheel.hpp"
+#include "thread_pool/pool.hpp"
+#include "thread_pool/executor_token.h"
+
+using namespace muse::pool;
+using namespace muse::timer;
+
+int main() {
+    std::shared_ptr<ThreadPool>  pool = std::make_shared<ThreadPool>(
+        4 , 8 , 1024 ,
+        ThreadPoolType::Flexible ,
+        ThreadPoolCloseStrategy::WaitAllTaskFinish ,
+        2500ms
+    );
+
+    TimerWheel wheel;
+    wheel.inject_thread_pool(pool);
+    
+    wheel.setInterval(1000ms,[](){
+        std::cout << "task1 run: " << std::this_thread::get_id() << "\n";
+    });
+    wheel.setInterval(600ms,[](){
+        std::cout << "task2 run: " << std::this_thread::get_id() << "\n";
+    });
+    std::cin.get();
+    return 0;
+}
+```
