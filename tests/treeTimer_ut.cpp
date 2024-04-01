@@ -26,7 +26,9 @@ private:
 
 int test_fun1(int value){
     int i  = 10;
-    return i + value;
+    int r = i + value;
+    std::cout << "return: " << r << "\n";
+    return r;
 };
 
 
@@ -38,7 +40,6 @@ TEST_CASE("normal", "[timer_tree]"){
     std::this_thread::sleep_for(std::chrono::milliseconds(1700));
 
     REQUIRE_NOTHROW(tree.runTask());
-
 }
 
 TEST_CASE("class number pointer", "[timer_tree]"){

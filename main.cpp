@@ -3,9 +3,17 @@
 #include "timer/timer_wheel.hpp"
 #include "thread_pool/pool.hpp"
 #include "thread_pool/executor_token.h"
+#include "timer/timer_tree.hpp"
 
 using namespace muse::pool;
 using namespace muse::timer;
+
+int test_fun1(int value){
+    int i  = 10;
+    int r = i + value;
+    std::cout << "return: " << r << "\n";
+    return r;
+};
 
 int main() {
     std::shared_ptr<ThreadPool>  pool = std::make_shared<ThreadPool>(
