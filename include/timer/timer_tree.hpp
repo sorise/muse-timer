@@ -12,10 +12,11 @@
 #include <mutex>
 #include <set>
 #include <utility>
+#include "thread_pool/conf.h"
 
 /* 基于红黑树的非线程安全的毫秒级定时器 */
 namespace muse::timer{
-    class TimeNodeBase{
+    class museTimer_WIN_API TimeNodeBase{
     private:
         uint64_t ID; //标识ID
         time_t expire;  //啥时候过期
@@ -34,14 +35,14 @@ namespace muse::timer{
         return me.getID() < other.getID(); //前插入的在前面 后插入的放在后面
     }
 
-    class TimeNode: public TimeNodeBase{
+    class museTimer_WIN_API TimeNode: public TimeNodeBase{
     public:
         using CallBack = std::function<void()>;
         CallBack callBack; //毁掉函数
         TimeNode(uint64_t Id,CallBack cb, time_t exp);
     };
 
-    class TimerTree {
+    class museTimer_WIN_API TimerTree {
     private:
         std::mutex mtx;
         uint64_t initID {0};

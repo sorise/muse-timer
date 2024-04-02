@@ -13,7 +13,7 @@ namespace muse::pool{
         MemoryNotEnough,                //内存不足
     };
 
-    struct CommitResult{
+    struct museTimer_WIN_API CommitResult{
         bool isSuccess;       //是否添加成功
         RefuseReason reason;  //失败原因
     };

@@ -19,10 +19,10 @@
 namespace muse::timer{
     using namespace std::chrono_literals;
 
-    class TimerWheel;
+    class museTimer_WIN_API TimerWheel;
 
     //标识单个任务
-    class TimerWheelTask{
+    class museTimer_WIN_API TimerWheelTask{
         friend class TimerWheel;
     public:
         using CallBack = std::function<void()>;
@@ -37,9 +37,9 @@ namespace muse::timer{
     public:
         uint64_t ID; //标识ID
         TimerWheelTask(CallBack cb, std::chrono::milliseconds exp);
-        std::chrono::milliseconds getExpire() const;
+        [[nodiscard]] std::chrono::milliseconds getExpire() const;
         void cancel();
-        bool getCancelState() const;
+        [[nodiscard]] bool getCancelState() const;
     };
 
     class TimerWheel{

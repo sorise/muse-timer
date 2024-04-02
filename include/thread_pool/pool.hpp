@@ -16,7 +16,7 @@ using namespace std::chrono_literals;
 // 只能传递引用、指针
 namespace muse::pool{
 
-    class ThreadPool{
+    class museTimer_WIN_API ThreadPool{
     private:
         std::vector<std::shared_ptr<Worker>> workers;               //所有的工作线程存放位置
         std::once_flag initFlag;                                    //初始化

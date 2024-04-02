@@ -10,6 +10,16 @@
 #include <atomic>
 #include <memory>
 
+#ifndef _WIN32
+    #define museTimer_WIN_API
+#else
+    #ifdef museTimer_EXPORTS
+        #define museTimer_WIN_API __declspec(dllexport)   //库项目调用
+    #else
+        #define museTimer_WIN_API __declspec(dllimport)  //调用库库项目调用
+    #endif
+#endif
+
 using namespace std::chrono_literals;
 
 namespace muse::pool{
@@ -27,15 +37,15 @@ namespace muse::pool{
     };
 
     /*存放工作线程*/
-    struct Worker{
+    struct museTimer_WIN_API Worker{
         std::atomic<bool> isRunning {false};
         std::shared_ptr<std::thread> workman {nullptr};
     };
 
-    std::chrono::milliseconds GetTick();
+    museTimer_WIN_API std::chrono::milliseconds GetTick();
 
     /* 并发线程池的工作线程状态信息 */
-    struct ConcurrentWorker{
+    struct museTimer_WIN_API ConcurrentWorker{
         std::atomic<bool> isRunning {false};
         //线程指针
         std::shared_ptr<std::thread> workman {nullptr};

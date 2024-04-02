@@ -40,6 +40,7 @@ TEST_CASE("normal", "[timer_tree]"){
     std::this_thread::sleep_for(std::chrono::milliseconds(1700));
 
     REQUIRE_NOTHROW(tree.runTask());
+    REQUIRE(1 == 1);
 }
 
 TEST_CASE("class number pointer", "[timer_tree]"){
@@ -54,6 +55,7 @@ TEST_CASE("class number pointer", "[timer_tree]"){
     tree.clearTimeout(token);
 
     REQUIRE(normal.getValue() == 76);
+    REQUIRE(1 == 1);
 }
 
 

@@ -11,7 +11,7 @@ namespace muse::pool{
     using Task = std::function<void()>; //表示一个代执行任务
 
     /* 执行任务 */
-    class Executor{
+    class museTimer_WIN_API Executor{
         friend class ThreadPool;
         friend class ConcurrentThreadPool;
     public:

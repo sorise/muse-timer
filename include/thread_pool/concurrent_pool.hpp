@@ -19,7 +19,7 @@ using namespace std::chrono_literals;
 namespace muse::pool{
     //如果你的服务以几十万 上百万级运行，CPU一直运转，几乎不停止，可以使用此物。
 
-    class ConcurrentThreadPool{
+    class museTimer_WIN_API ConcurrentThreadPool{
     private:
         size_t QueueMaxSize;                                                        //队列长度
         ConcurrentQueue<std::shared_ptr<Executor>> queueTask;        //存放任务
