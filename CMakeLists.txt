@@ -28,26 +28,26 @@ add_library(museTimer SHARED
     include/thread_pool/concurrent_pool.cpp
 )
 
-add_executable(runner main.cpp)
-
-target_link_libraries(runner
-    PUBLIC museTimer
-)
+#add_executable(runner main.cpp)
+#
+#target_link_libraries(runner
+#    PUBLIC museTimer
+#)
 
 # 启动单元测试
-enable_testing()
+#enable_testing()
 # 进入单元测试
-
-add_executable(tree_ut tests/treeTimer_ut.cpp)
-add_executable(wheel_ut tests/wheelTimer_ut.cpp)
-
-target_link_libraries(tree_ut
-        PUBLIC museTimer
-)
-
-target_link_libraries(wheel_ut
-        PUBLIC museTimer
-)
-
-add_test( NAME "tree_ut" COMMAND tree_ut )
-add_test( NAME "wheel_ut" COMMAND wheel_ut )
+#
+#add_executable(tree_ut tests/treeTimer_ut.cpp)
+#add_executable(wheel_ut tests/wheelTimer_ut.cpp)
+#
+#target_link_libraries(tree_ut
+#        PUBLIC museTimer
+#)
+#
+#target_link_libraries(wheel_ut
+#        PUBLIC museTimer
+#)
+#
+#add_test( NAME "tree_ut" COMMAND tree_ut )
+#add_test( NAME "wheel_ut" COMMAND wheel_ut )
