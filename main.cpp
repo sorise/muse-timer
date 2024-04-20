@@ -16,6 +16,32 @@ int test_fun1(int value){
 };
 
 int main() {
+    muse::timer::TimerTree tree;
+
+    tree.setTimeout(0, [](int value)->void {
+        printf("return: %d\n",value);
+    },10);
+
+    tree.setTimeout(0, [](int value)->void {
+        printf("return: %d\n",value);
+    },11);
+
+    tree.setTimeout(0, [](int value)->void {
+        printf("return: %d\n",value);
+    },12);
+
+    tree.setTimeout(10, [](int value)->void {
+        printf("return: %d\n",value);
+    },13);
+
+    tree.setTimeout(11, [](int value)->void {
+        printf("return: %d\n",value);
+    },14);
+
+    tree.runTaskLoop();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    tree.runTaskLoop();
+
     std::shared_ptr<ThreadPool>  pool = std::make_shared<ThreadPool>(
             4 , 8 , 1024 ,
                      ThreadPoolType::Flexible ,

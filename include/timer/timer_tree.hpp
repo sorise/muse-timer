@@ -90,6 +90,8 @@ namespace muse::timer{
 
         /* 执行任务 */
         bool runTask();
+
+        void runTaskLoop();
     };
 }
 
