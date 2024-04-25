@@ -20,10 +20,15 @@ namespace muse::timer{
     private:
         uint64_t ID; //标识ID
         time_t expire;  //啥时候过期
+        bool duplicate{true}; //是否重复执行
+        time_t delay_interval{0}; //间隔
     public:
         TimeNodeBase(uint64_t Id, time_t exp);
-        uint64_t getID() const;
-        time_t getExpire() const;
+        void set_duplicate(const bool &_duplicate, const uint64_t& interval);
+        [[nodiscard]] uint64_t getID() const;
+        [[nodiscard]] time_t getExpire() const;
+        [[nodiscard]] bool isDuplicate() const;
+        [[nodiscard]] time_t getInternal() const;
     };
 
     static bool operator < (const TimeNodeBase &me, const TimeNodeBase &other){
@@ -78,6 +83,37 @@ namespace muse::timer{
         TimeNodeBase setTimeout(long long milliseconds, F&& f, R* r,  Args&&... args){
             TimeNode::CallBack callBack = std::bind(std::forward<F>(f), r ,std::forward<Args>(args)...);
             TimeNode tNode(GenTimeTaskID() ,callBack, GetTick() + milliseconds);
+            nodes.insert(tNode);
+            return static_cast<TimeNodeBase>(tNode);
+        }
+
+        /*******************************************/
+        //添加到树上
+        template<class F, class ...Args >
+        TimeNodeBase setInternal(long long milliseconds, F && f, Args&&... args){
+            TimeNode::CallBack callBack = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
+            TimeNode tNode(GenTimeTaskID() ,callBack, GetTick() + milliseconds);
+            tNode.set_duplicate(true, milliseconds);
+            nodes.insert(tNode);
+            return static_cast<TimeNodeBase>(tNode);
+        }
+
+        //添加到树上普通 函数指针  + 引用
+        template<typename F,typename R, typename ...Args>
+        TimeNodeBase setInternal(long long milliseconds, F&& f, R& r,  Args&&... args){
+            TimeNode::CallBack callBack = std::bind(std::forward<F>(f) , std::ref(r) ,std::forward<Args>(args)...);
+            TimeNode tNode(GenTimeTaskID() ,callBack, GetTick() + milliseconds);
+            tNode.set_duplicate(true, milliseconds);
+            nodes.insert(tNode);
+            return static_cast<TimeNodeBase>(tNode);
+        }
+
+        //添加到树上 函数指针 + 指针
+        template<typename F, typename R, typename ...Args>
+        TimeNodeBase setInternal(long long milliseconds, F&& f, R* r,  Args&&... args){
+            TimeNode::CallBack callBack = std::bind(std::forward<F>(f), r ,std::forward<Args>(args)...);
+            TimeNode tNode(GenTimeTaskID() ,callBack, GetTick() + milliseconds);
+            tNode.set_duplicate(true, milliseconds);
             nodes.insert(tNode);
             return static_cast<TimeNodeBase>(tNode);
         }

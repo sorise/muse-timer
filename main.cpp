@@ -18,45 +18,39 @@ int test_fun1(int value){
 int main() {
     muse::timer::TimerTree tree;
 
-    tree.setTimeout(0, [](int value)->void {
+    tree.setInternal(1000, [](int value)->void {
         printf("return: %d\n",value);
     },10);
 
-    tree.setTimeout(0, [](int value)->void {
+    tree.setInternal(1500, [](int value)->void {
         printf("return: %d\n",value);
-    },11);
+    },15);
 
-    tree.setTimeout(0, [](int value)->void {
-        printf("return: %d\n",value);
-    },12);
+    int i = 0;
 
-    tree.setTimeout(10, [](int value)->void {
-        printf("return: %d\n",value);
-    },13);
+    while (i++ < 10){
+        tree.runTaskLoop();
+        std::this_thread::sleep_for(std::chrono::milliseconds (1000));
+    }
 
-    tree.setTimeout(11, [](int value)->void {
-        printf("return: %d\n",value);
-    },14);
+    std::cout << "main thread exit" << std::endl;
 
-    tree.runTaskLoop();
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    tree.runTaskLoop();
-
-    std::shared_ptr<ThreadPool>  pool = std::make_shared<ThreadPool>(
-            4 , 8 , 1024 ,
-                     ThreadPoolType::Flexible ,
-                     ThreadPoolCloseStrategy::WaitAllTaskFinish ,
-                     2500ms
-    );
-
-    TimerWheel wheel;
-    wheel.inject_thread_pool(pool);
-    wheel.setInterval(1000ms,[](){
-        std::cout << "task1 run: " << std::this_thread::get_id() << "\n";
-    });
-    wheel.setInterval(600ms,[](){
-        std::cout << "task2 run: " << std::this_thread::get_id() << "\n";
-    });
+//
+//    std::shared_ptr<ThreadPool>  pool = std::make_shared<ThreadPool>(
+//            4 , 8 , 1024 ,
+//                     ThreadPoolType::Flexible ,
+//                     ThreadPoolCloseStrategy::WaitAllTaskFinish ,
+//                     2500ms
+//    );
+//
+//    TimerWheel wheel;
+//    wheel.inject_thread_pool(pool);
+//    wheel.setInterval(1000ms,[](){
+//        std::cout << "task1 run: " << std::this_thread::get_id() << "\n";
+//    });
+//    wheel.setInterval(600ms,[](){
+//        std::cout << "task2 run: " << std::this_thread::get_id() << "\n";
+//    });
     std::cin.get();
     return 0;
 }

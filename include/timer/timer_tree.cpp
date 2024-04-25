@@ -17,6 +17,19 @@ namespace muse::timer{
         return expire;
     }
 
+    bool TimeNodeBase::isDuplicate() const {
+        return this->duplicate;
+    }
+
+    void TimeNodeBase::set_duplicate(const bool &duplicate, const uint64_t& interval) {
+        this->duplicate = duplicate;
+        this->delay_interval = interval;
+    }
+
+    time_t TimeNodeBase::getInternal() const {
+        return this->delay_interval;
+    }
+
 
     TimeNode::TimeNode(uint64_t Id, CallBack cb, time_t exp)
     :TimeNodeBase(Id, exp), callBack(std::move(cb)){
@@ -56,10 +69,16 @@ namespace muse::timer{
     bool TimerTree::runTask(){
         if (!nodes.empty()){
             //迭代器，但是加锁了
+            time_t current = TimerTree::GetTick();
             auto it = nodes.begin();
-            time_t diff = it->getExpire() - TimerTree::GetTick();
+            time_t diff = it->getExpire() - current;
             if (diff <= 0){
                 it->callBack(); //调用 会不会有异常啊
+                if (it->isDuplicate()){
+                    TimeNode newNode(GenTimeTaskID() ,it->callBack,   current + it->getInternal());
+                    newNode.set_duplicate(true, it->getInternal());
+                    nodes.insert(newNode);
+                }
                 nodes.erase(it);
                 return true;
             }
@@ -74,6 +93,11 @@ namespace muse::timer{
             time_t diff = start->getExpire() - current;
             if (diff <= 0){
                 start->callBack();
+                if (start->isDuplicate()){
+                    TimeNode newNode(GenTimeTaskID() ,start->callBack,   current + start->getInternal());
+                    newNode.set_duplicate(true, start->getInternal());
+                    nodes.insert(newNode);
+                }
                 start = nodes.erase(start);
             }else{
                 break;
