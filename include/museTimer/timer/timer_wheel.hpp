@@ -13,8 +13,8 @@
 #include <thread>
 #include <array>
 #include <atomic>
-#include "thread_pool/pool.hpp"
-#include "thread_pool/executor.h"
+#include "../thread_pool/pool.hpp"
+#include "../thread_pool/executor.h"
 
 namespace muse::timer{
     using namespace std::chrono_literals;
@@ -51,9 +51,9 @@ namespace muse::timer{
         static const uint16_t levelCount = 5;
         //获得当前的时间，采取  system_clock
         static std::chrono::milliseconds GetTick();
+    private:
         //线程池
         std::shared_ptr<muse::pool::ThreadPool> pool {nullptr};
-    private:
         struct Bucket{
             //放在每个桶里面
             uint64_t initID {0};

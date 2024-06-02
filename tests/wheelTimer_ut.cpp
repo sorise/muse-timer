@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "timer/timer_wheel.hpp"
+#include "museTimer/timer/timer_wheel.hpp"
 
 using namespace muse::timer;
 
@@ -25,7 +25,7 @@ private:
 
 TimerWheel timer;
 
-TEST_CASE("normal", "[TimerWheel]"){
+TEST_CASE("normal_", "[TimerWheel]"){
     Normal normal(14, "remix");
 
     timer.setTimeout(1000ms, &Normal::setValueAndGetName, &normal, 76);
@@ -36,13 +36,12 @@ TEST_CASE("normal", "[TimerWheel]"){
 }
 
 
-TEST_CASE("normal", "[TimerWheel]"){
+TEST_CASE("normal_2", "[TimerWheel]"){
     auto vk= timer.setInterval(1000ms, [](int value){
         std::cout << "logger: " << value << std::endl;
     },500);
 
-
     vk->cancel();
 
-    TimerWheel::clearTimeout(vk);
+    REQUIRE_NOTHROW(TimerWheel::clearTimeout(vk));
 }

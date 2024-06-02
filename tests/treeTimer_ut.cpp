@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "timer/timer_tree.hpp"
+#include "museTimer/timer/timer_tree.hpp"
 #include <thread>
 
 using namespace muse::timer;

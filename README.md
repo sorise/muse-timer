@@ -3,7 +3,7 @@
 
 ----
 * **TimerTree** 使用红黑树使用的单线程非线程安全的的定时器
-* **TimerWheel** 使用时间轮算法实现的五层时间轮毫秒级定时器，支持时间精度损失自动修复。
+* **TimerWheel** 使用时间轮算法实现的五层时间轮毫秒级定时器，支持时间精度损失自动修复、支持结合线程池。
 
 ### [1. TimerTree 使用例子](#)
 基于红黑树的定时器一般配合 epoll或者 poll之类的使用。
@@ -19,7 +19,7 @@ TimerTree tree;
 Normal normal(14, "remix");
 // 添加一个类成员函数指针，时间刻度是毫秒，此处是1000毫秒
 tree.setTimeout(1000, &Normal::setValueAndGetName, &normal, 76);
-//添加一个lambda
+// 添加一个lambda
 tree.setTimeout(1000, [](){
     printf("run me");
 });
@@ -28,11 +28,15 @@ tree.setTimeout(1000, [](){
 #### 1.2 查看最近的任务还要多久才会支持
 使用checkTimeout将会返回一个毫秒数，表示最近的任务还需要多久才会执行，没有任务返回 `-1`。
 ```c++
-time_t t =tree.checkTimeout();
+time_t t = tree.checkTimeout();
 ```
 
 #### 1.3 执行任务
 所有到期的任务都会逐一执行完成。
+```c++
+tree.runTaskLoop();
+```
+执行一个已经到期的任务
 ```c++
 tree.runTask();
 ```

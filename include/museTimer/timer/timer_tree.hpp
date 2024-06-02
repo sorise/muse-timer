@@ -12,7 +12,7 @@
 #include <mutex>
 #include <set>
 #include <utility>
-#include "thread_pool/conf.h"
+#include "../thread_pool/conf.h"
 
 /* 基于红黑树的非线程安全的毫秒级定时器 */
 namespace muse::timer{
