@@ -5,6 +5,14 @@
 * **TimerTree** 使用红黑树使用的单线程非线程安全的的定时器
 * **TimerWheel** 使用时间轮算法实现的五层时间轮毫秒级定时器，支持时间精度损失自动修复、支持结合线程池。
 
+```shell
+#linux/windows install、安装需要使用到CMAKE。
+cmake -S . -B build
+cmake --build build
+cd build 
+sudo make install #需要管理员权限 ubuntu 例子
+```
+
 ### [1. TimerTree 使用例子](#)
 基于红黑树的定时器一般配合 epoll或者 poll之类的使用。
 
